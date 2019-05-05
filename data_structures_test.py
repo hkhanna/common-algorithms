@@ -45,13 +45,14 @@ def compare_delete(index, *classes):
 
 myarray = MyArray(list(range(100)))
 pyarray = PythonArray(list(range(100)))
+classes = [myarray, pyarray]
 
-read = compare_read(50, myarray, pyarray)
-insert_beginning = compare_insert("hello", 0, myarray, pyarray)
-insert_end = compare_insert("hello", -1, myarray, pyarray)
-search = compare_search("notexist", myarray, pyarray)
-delete_beginning = compare_delete(0, myarray, pyarray)
-delete_end = compare_delete(-1, myarray, pyarray)
+read = compare_read(50, *classes)
+insert_beginning = compare_insert("hello", 0, *classes)
+insert_end = compare_insert("hello", -1, *classes)
+search = compare_search("notexist", *classes)
+delete_beginning = compare_delete(0, *classes)
+delete_end = compare_delete(-1, *classes)
 
 table = prettytable.PrettyTable()
 
