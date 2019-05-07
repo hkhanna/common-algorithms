@@ -71,3 +71,67 @@ class PythonArray(object):
     
     def delete(self, index):
         del self.arr[index]
+
+
+class MyHashTable(object):
+    """My implementation of a hash table"""
+    def __init__(self, initial={}):
+        self.cells = int(len(initial) * 0.7) # load factor of 0.7
+
+        self.ht = [[]] * self.cells
+        for key, val in initial.items():
+            self.insert(key, val)
+
+    def read(self, key):
+        # Search and read are conceptually the same
+        return self.search(key)
+
+    def insert(self, key, val):
+        cell = self.getcell(key)
+        self.ht[cell].append((key, val))
+    
+    def search(self, key):
+        cell = self.getcell(key)
+        for k, v in self.ht[cell]: # Each cell stores an array of key, val tuples.
+            if k == key:
+                return v
+        return None
+
+    def delete(self, key):
+        cell = self.getcell(key)
+        for index, (k, _) in enumerate(self.ht[cell]):
+            if k == key:
+                del self.ht[cell][index]
+
+    def getcell(self, key):
+        hashcode = ''
+        for s in str(key):
+            hashcode += str(ord(s)) # this is to handle in case either a string or an int is passed
+        cell = int(hashcode) % self.cells
+        return cell
+
+
+class PythonHashTable(object):
+    """A python dict"""
+    def __init__(self, initial={}):
+        self.ht = initial
+
+    def read(self, key):
+        # Search and read are conceptually the same
+        return self.search(key)
+
+    def insert(self, key, val):
+        # Ignore collisions
+        self.ht[key] = val
+
+    def search(self, key):
+        try:
+            return self.ht[key]
+        except KeyError:
+            return None
+
+    def delete(self, key):
+        try:
+            del self.ht[key]
+        except KeyError:
+            return None

@@ -1,7 +1,7 @@
-
+import random
 import prettytable
 from timeit import default_timer as timer
-from data_structures import MyArray, PythonArray
+from data_structures import MyArray, PythonArray, MyHashTable, PythonHashTable
 
 def compare_read(index, *classes):
     comparisons = {}
@@ -43,9 +43,13 @@ def compare_delete(index, *classes):
         comparisons[key] = end - start
     return comparisons
 
-myarray = MyArray(list(range(100)))
-pyarray = PythonArray(list(range(100)))
-classes = [myarray, pyarray]
+myarray = MyArray(list(range(10000)))
+pyarray = PythonArray(list(range(10000)))
+
+hashdata = { k: k-1 for k in range(1, 10000)}
+myhashtable = MyHashTable(hashdata)
+pyhashtable = PythonHashTable(hashdata)
+classes = [myarray, pyarray, myhashtable, pyhashtable]
 
 read = compare_read(50, *classes)
 insert_beginning = compare_insert("hello", 0, *classes)
