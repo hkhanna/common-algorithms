@@ -1,4 +1,12 @@
-class MyArray(object):
+class BaseDataStructure(object):
+    def call(self, fn_name, *args):
+        try:
+            fn = getattr(self, fn_name)
+        except AttributeError:
+            return None
+        return fn(*args)
+
+class MyArray(BaseDataStructure):
     """My implementation of an array"""
 
     def __init__(self, initial=[]):
@@ -26,6 +34,8 @@ class MyArray(object):
         # Insert new item
         self.arr[index] = val
 
+        return val
+
     def search(self, val):
         for i in range(len(self.arr)):
             if self.arr[i] == val:
@@ -47,10 +57,12 @@ class MyArray(object):
         # Remove the empty cell at the end
         del self.arr[-1]
 
+        return index
+
     def __repr__(self):
         return str(self.arr)
 
-class PythonArray(object):
+class PythonArray(BaseDataStructure):
     """Use the python stdlib as much as possible"""
     def __init__(self, initial=[]):
         self.arr = initial
@@ -62,6 +74,7 @@ class PythonArray(object):
  
     def insert(self, val, index=0):
         self.arr.insert(index, val)
+        return val
     
     def search(self, val):
         try:
@@ -71,9 +84,10 @@ class PythonArray(object):
     
     def delete(self, index):
         del self.arr[index]
+        return index
 
 
-class MyHashTable(object):
+class MyHashTable(BaseDataStructure):
     """My implementation of a hash table"""
     def __init__(self, initial={}):
         self.cells = int(len(initial) * 0.7) # load factor of 0.7
@@ -84,24 +98,26 @@ class MyHashTable(object):
 
     def read(self, key):
         # Search and read are conceptually the same
-        return self.search(key)
+        return None
 
     def insert(self, key, val):
         cell = self.getcell(key)
         self.ht[cell].append((key, val))
+        return val
     
     def search(self, key):
         cell = self.getcell(key)
         for k, v in self.ht[cell]: # Each cell stores an array of key, val tuples.
             if k == key:
                 return v
-        return None
+        return False
 
     def delete(self, key):
         cell = self.getcell(key)
         for index, (k, _) in enumerate(self.ht[cell]):
             if k == key:
                 del self.ht[cell][index]
+        return key
 
     def getcell(self, key):
         hashcode = ''
@@ -111,27 +127,79 @@ class MyHashTable(object):
         return cell
 
 
-class PythonHashTable(object):
+class PythonHashTable(BaseDataStructure):
     """A python dict"""
     def __init__(self, initial={}):
         self.ht = initial
 
     def read(self, key):
         # Search and read are conceptually the same
-        return self.search(key)
+        return None
 
     def insert(self, key, val):
         # Ignore collisions
         self.ht[key] = val
+        return val
 
     def search(self, key):
         try:
             return self.ht[key]
         except KeyError:
-            return None
+            return False
 
     def delete(self, key):
         try:
             del self.ht[key]
+            return key
         except KeyError:
-            return None
+            return False
+
+
+class MyStack(BaseDataStructure):
+    """My implementation of a stack"""
+    def __init__(self, initial=[]):
+        self.arr = initial
+    
+    def remove(self):
+        index = len(self.arr) - 1
+        val = self.arr[index]
+        del self.arr[index]
+        return val
+    
+    def add(self, item):
+        self.arr.append(None) # Insert spot at end
+        index = len(self.arr) - 1
+        self.arr[index] = item
+        return item
+    
+    def isEmpty(self):
+        if len(self.arr) == 0:
+            return True
+        else:
+            return False
+
+class MyQueue(BaseDataStructure):
+    """My implementation of a queue"""
+    def __init__(self, initial=[]):
+        self.arr = initial
+    
+    def add(self, item):
+        self.arr.append(None) # insert spot at end
+        for index in range(len(self.arr)):
+            new_index = len(self.arr) - 1 - index
+            old_index = new_index - 1
+            self.arr[new_index] = self.arr[old_index]
+        self.arr[0] = item
+        return item
+
+    def remove(self):
+        index = len(self.arr) - 1
+        val = self.arr[index]
+        del self.arr[index]
+        return val
+
+    def isEmpty(self):
+        if len(self.arr) == 0:
+            return True
+        else:
+            return False
