@@ -1,4 +1,7 @@
 class BaseDataStructure(object):
+    def __init__(self, _=None):
+        pass
+
     def call(self, fn_name, *args):
         try:
             fn = getattr(self, fn_name)
@@ -203,3 +206,27 @@ class MyQueue(BaseDataStructure):
             return True
         else:
             return False
+
+class MySet(BaseDataStructure):
+    pass
+
+class PythonSet(BaseDataStructure):
+    pass
+
+class MyOrderedArray(BaseDataStructure):
+    pass
+
+class MyLinkedList(BaseDataStructure):
+    pass
+
+class MyDoublyLinkedListQueue(BaseDataStructure):
+    pass
+
+class MyBST(BaseDataStructure):
+    pass
+
+class MyMaxHeap(BaseDataStructure):
+    pass
+
+class MyTrie(BaseDataStructure):
+    pass
